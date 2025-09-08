@@ -1,8 +1,18 @@
 services:
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.production
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - NODE_ENV=production
+
   app:
-    build: .
-    volumes:
-      - ./app:/app
-    working_dir: /app
-    ports:
-      - "8080:8080"
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    image: dcdim/devops-for-programmers-project-74:latest
+    command: ["npm", "test"]
+    environment:
+      - NODE_ENV=test
