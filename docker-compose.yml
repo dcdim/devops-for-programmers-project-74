@@ -1,18 +1,25 @@
 services:
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.production
-  #   ports:
-  #     - "8080:8080"
-  #   environment:
-  #     - NODE_ENV=production
-
   app:
     build:
       context: .
       dockerfile: Dockerfile.production
     image: dcdim/devops-for-programmers-project-74:latest
-    command: ["npm", "test"]
+    command: ["make", "start"]
     environment:
       - NODE_ENV=test
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
