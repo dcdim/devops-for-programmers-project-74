@@ -13,13 +13,13 @@ prepare-env:
 	cp -n .env.example .env
 
 start:
-	NODE_ENV=production npm run start
+	NODE_ENV=production npm start
 
 dev:
-	npx concurrently "make start-frontend" "make start-backend"
+	npm run dev
 
 start-backend:
-	npm start -- --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'
+	npm run start -- --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'
 
 start-frontend:
 	npx webpack --watch --progress
@@ -31,13 +31,4 @@ lint-fix:
 	npx eslint --fix .
 
 test:
-	NODE_ENV=test npm test -s
-
-docker-start:
-	docker-compose up
-
-test-docker:
-	docker-compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from app
-
-ci:
-	docker compose run --rm app
+	NODE_ENV=test npm test
