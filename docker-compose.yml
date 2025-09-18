@@ -4,16 +4,17 @@ services:
       context: .
       dockerfile: Dockerfile.production
     image: dcdim/devops-for-programmers-project-74:latest
-    command: ["make", "start"]
     environment:
       - NODE_ENV=test
       - DATABASE_HOST=${DATABASE_HOST}
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_USERNAME=${DATABASE_USERNAME}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_PORT=${DATABASE_PORT}
     depends_on:
       db:
         condition: service_healthy
+    command: make test
 
   db:
     image: postgres:latest
@@ -27,3 +28,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+volumes:
+  postgres_data:

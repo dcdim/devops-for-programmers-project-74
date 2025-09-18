@@ -13,8 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Create .env file from .env.example
+        run: cp .env.example .env
+
       - name: Run tests using Docker Compose
-        run: docker compose -f docker-compose.yml up --abort-on-container-exit
+        run: docker compose --env-file .env -f docker-compose.yml up --abort-on-container-exit
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
